@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all test clean deploy fund help install snapshot format anvil 
+.PHONY: all test clean deploy fund help install snapshot format anvil deployMood
 
 DEFAULT_ANVIL_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
@@ -27,3 +27,15 @@ deploy-sepolia:
 mint:
 	@echo "Minting NFT..."
 	@forge script script/Interactions.s.sol:MintBasicNft --rpc-url $(SEPOLIA_RPC_URL) --account myaccount --broadcast
+
+deployMood-anvil:
+	@echo "Deploying MoodNft on Anvil..."
+	@forge script script/DeployMoodNft.s.sol:DeployMoodNft --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+mintMood-anvil:
+	@echo "Minting MoodNft on Anvil..."
+	@cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "mintNft()" --private-key $(DEFAULT_ANVIL_KEY) --rpc-url http://localhost:8545
+
+flipMood-anvil:
+	@echo "Flipping MoodNft on Anvil..."
+	@cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "flipMood(uint256)" 0 --private-key $(DEFAULT_ANVIL_KEY) --rpc-url http://localhost:8545
